@@ -1,0 +1,137 @@
+---
+import { webinar } from "../data/webinar";
+---
+
+<section class="cta-band">
+  <div class="cta-band__bg" aria-hidden="true">
+    <img src="/assets/images/cta-bg-cityscape.jpg" alt="" width="1440" height="536" loading="lazy" />
+  </div>
+
+  <div class="cta-band__inner container container--padded">
+    <div class="cta-band__card">
+      <div class="cta-band__text">
+        <span class="cta-band__eyebrow" aria-hidden="true"></span>
+        <h2 class="cta-band__title">Ако се разпозна, не оставай само с амбицията.</h2>
+        <p class="cta-band__subtitle">Виж как се превръща в резултати.</p>
+      </div>
+      <a class="cta-band__button btn" href="#register">Регистрирай се сега</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .cta-band__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .cta-band__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(132deg, rgba(165, 196, 214, 0.7) 12.1%, rgba(249, 221, 222, 0.7) 80.8%);
+  }
+
+  .cta-band__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cta-band__inner {
+    position: relative;
+    z-index: 1;
+    padding-top: 5.25em; /* 84px */
+    padding-bottom: 5.25em;
+  }
+
+  .cta-band__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.25em; /* 36px */
+    max-width: 63.5em; /* 1016px */
+    margin-inline: auto;
+    padding: 3em 8.5em; /* 48px 136px */
+    background: linear-gradient(-90deg, rgba(255, 255, 255, 0.42) 1.76%, rgba(255, 255, 255, 0.7) 98.47%);
+    backdrop-filter: blur(15px);
+    border: 1px solid #ffffff;
+    border-radius: 1.875em; /* 30px */
+  }
+
+  .cta-band__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25em; /* 20px */
+    text-align: center;
+  }
+
+  .cta-band__eyebrow {
+    display: block;
+    width: 2.5em;
+    height: 2px;
+    background-color: var(--color-primary);
+  }
+
+  .cta-band__title {
+    font-size: 2.625em; /* 42px */
+    font-weight: 500;
+    line-height: 1.2;
+    color: #1c1c1c;
+  }
+
+  .cta-band__subtitle {
+    font-size: 1.75em; /* 28px */
+    font-weight: 400;
+    line-height: 1.2;
+    color: #1c1c1c;
+  }
+
+  .cta-band__button {
+    width: 100%;
+    border-radius: 2em; /* 33px */
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    .cta-band__card {
+      padding: 2.5em 3em;
+    }
+
+    .cta-band__title {
+      font-size: 2.1em;
+    }
+
+    .cta-band__subtitle {
+      font-size: 1.5em;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .cta-band__inner {
+      padding-top: 3em;
+      padding-bottom: 3em;
+    }
+
+    .cta-band__card {
+      padding: 2em 1.5em;
+    }
+
+    .cta-band__title {
+      font-size: 1.7em;
+    }
+
+    .cta-band__subtitle {
+      font-size: 1.25em;
+    }
+  }
+</style>

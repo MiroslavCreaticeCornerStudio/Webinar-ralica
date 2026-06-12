@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import WhoIsItFor from "../components/WhoIsItFor.astro";
+import CtaBand from "../components/CtaBand.astro";
+import WhatYouLearn from "../components/WhatYouLearn.astro";
+import Speaker from "../components/Speaker.astro";
+import Benefits from "../components/Benefits.astro";
+import FinalCta from "../components/FinalCta.astro";
+import Footer from "../components/Footer.astro";
+import { webinar } from "../data/webinar";
+
+const siteUrl = Astro.site?.href ?? "https://home2u.com/";
+
+const eventSchema = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: "Сделки за милиони — Безплатен уебинар с Ралица Ценова",
+  description:
+    "Безплатен онлайн уебинар за имоти с Ралица Ценова. Научи формулата зад рекордния успех в продажбите на имоти.",
+  startDate: webinar.startISO,
+  endDate: "2026-06-18T19:00:00+03:00",
+  eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+  eventStatus: "https://schema.org/EventScheduled",
+  location: {
+    "@type": "VirtualLocation",
+    url: new URL("#register", siteUrl).href,
+  },
+  image: [new URL("assets/images/hero-speaker-ralitsa.png", siteUrl).href],
+  organizer: { "@type": "Organization", name: "Home2U", url: siteUrl },
+  performer: { "@type": "Person", name: "Ралица Ценова" },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "BGN",
+    availability: "https://schema.org/InStock",
+    url: new URL("#register", siteUrl).href,
+  },
+};
+---
+
+<BaseLayout>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(eventSchema)}
+  />
+
+  <main id="main">
+    <Hero />
+    <WhoIsItFor />
+    <CtaBand />
+    <WhatYouLearn />
+    <Speaker />
+    <Benefits />
+    <FinalCta />
+  </main>
+  <Footer />
+</BaseLayout>

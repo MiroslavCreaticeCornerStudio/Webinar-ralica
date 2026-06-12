@@ -1,0 +1,154 @@
+---
+const items = [
+  { icon: "who-icon-1-chartlineup.svg", text: "Обмисляш кариера в недвижими имоти и искаш да се учиш от най-добрите в бранша" },
+  { icon: "who-icon-2-trendup.svg", text: "Работиш като брокер и искаш да разбереш как да достигнеш следващото ниво" },
+  { icon: "who-icon-3-usersthree.svg", text: "Ръководиш малък екип или агенция и искаш по-силни резултати" },
+  { icon: "who-icon-4-usercircle.svg", text: "Занимаваш се с имоти от известно време, но усещаш, че таванът ти е по-нисък от потенциала ти" },
+  { icon: "who-icon-5-listchecks.svg", text: "Искаш реални стратегии от човек с доказани резултати на пазара, а не от теоретици" },
+];
+---
+
+<section class="who" id="who">
+  <img class="who__decoration" src="/assets/images/who-decorative-ellipses.svg" alt="" aria-hidden="true" />
+
+  <div class="who__inner container container--padded">
+    <div class="who__header">
+      <span class="who__eyebrow" aria-hidden="true"></span>
+      <h2 class="who__title">Този уебинар е за теб, ако...</h2>
+    </div>
+
+    <ul class="who__list">
+      {
+        items.map((item) => (
+          <li class="who__card">
+            <span class="who__icon-box">
+              <img src={`/assets/images/${item.icon}`} alt="" width="32" height="32" />
+            </span>
+            <p class="who__text">{item.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .who {
+    position: relative;
+    width: 100%;
+    background: var(--color-bg-white);
+    overflow: hidden;
+  }
+
+  .who__decoration {
+    position: absolute;
+    top: -3.8em;
+    left: -13.4em;
+    width: 55.75em; /* 892px */
+    max-width: none;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .who__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 3em;
+    padding-top: 5.25em; /* 84px */
+    padding-bottom: 5.25em;
+  }
+
+  .who__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25em;
+    width: 34em; /* 545px */
+    flex-shrink: 0;
+  }
+
+  .who__eyebrow {
+    display: block;
+    width: 2.5em; /* 40px */
+    height: 2px;
+    background-color: var(--color-primary);
+  }
+
+  .who__title {
+    font-size: 2.625em; /* 42px */
+    font-weight: 500;
+    line-height: 1.2;
+    color: #1c1c1c;
+  }
+
+  .who__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em; /* 24px */
+    width: 40.4em; /* 646px */
+    flex-shrink: 0;
+  }
+
+  .who__card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1em; /* 16px */
+    padding: 1.5em 2em; /* 24px 32px */
+    background: linear-gradient(-18deg, rgba(231, 241, 248, 0.7), rgba(248, 234, 237, 0.7));
+    backdrop-filter: blur(4px);
+    border: 1px solid #ffffff;
+    border-radius: var(--radius-md);
+  }
+
+  .who__icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0.625em; /* 10px */
+    background: #ffffff;
+    border-radius: 0.55em;
+  }
+
+  .who__icon-box img {
+    width: 2em; /* 32px */
+    height: 2em;
+  }
+
+  .who__text {
+    font-size: 1.125em; /* 18px */
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    .who__inner {
+      flex-direction: column;
+      gap: 2.5em;
+    }
+
+    .who__header,
+    .who__list {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .who__inner {
+      padding-top: 3em;
+      padding-bottom: 3em;
+    }
+
+    .who__title {
+      font-size: 2.1em;
+    }
+
+    .who__card {
+      padding: 1.25em 1.25em;
+    }
+  }
+</style>

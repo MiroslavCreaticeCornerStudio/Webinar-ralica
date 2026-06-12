@@ -1,0 +1,378 @@
+---
+import Countdown from "./Countdown.astro";
+import { webinar } from "../data/webinar";
+
+const details = [
+  { icon: "icon-calendar.svg", label: "Дата:", value: "18.06.2026" },
+  { icon: "icon-map-pin.svg", label: "Къде", value: "Онлайн в Zoom" },
+  { icon: "icon-hourglass.svg", label: "Времетраене:", value: "60 мин." },
+  { icon: "icon-clock.svg", label: "Час:", value: "18:00" },
+];
+---
+
+<section class="final-cta" id="register">
+  <div class="final-cta__bg" aria-hidden="true">
+    <img src="/assets/images/final-cta-bg.jpg" alt="" width="1440" height="855" loading="lazy" />
+  </div>
+
+  <div class="final-cta__inner container container--padded">
+    <div class="final-cta__grid">
+      <!-- Left: webinar info -->
+      <div class="final-cta__info">
+        <div class="final-cta__header">
+          <h2 class="final-cta__title">Готов ли си да научиш как се затварят сделки за милиони?</h2>
+          <span class="final-cta__eyebrow" aria-hidden="true"></span>
+        </div>
+
+        <ul class="final-cta__details">
+          {
+            details.map((d) => (
+              <li class="final-cta__detail">
+                <img src={`/assets/images/${d.icon}`} alt="" width="36" height="36" />
+                <div class="final-cta__detail-text">
+                  <span class="final-cta__detail-label">{d.label}</span>
+                  <span class="final-cta__detail-value">{d.value}</span>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="final-cta__countdown">
+          <Countdown targetISO={webinar.startISO} variant="cta" />
+        </div>
+      </div>
+
+      <!-- Right: registration form -->
+      <form class="final-cta__form" id="register-form" novalidate>
+        <div class="final-cta__fields">
+          <div class="final-cta__field">
+            <label class="final-cta__label" for="reg-name">Име<span aria-hidden="true">*</span></label>
+            <input class="final-cta__input" type="text" id="reg-name" name="name" placeholder="Име" required autocomplete="name" />
+          </div>
+          <div class="final-cta__field">
+            <label class="final-cta__label" for="reg-phone">Телефон<span aria-hidden="true">*</span></label>
+            <input class="final-cta__input" type="tel" id="reg-phone" name="phone" placeholder="Телефон" required autocomplete="tel" />
+          </div>
+          <div class="final-cta__field">
+            <label class="final-cta__label" for="reg-email">Имейл<span aria-hidden="true">*</span></label>
+            <input class="final-cta__input" type="email" id="reg-email" name="email" placeholder="Имейл" required autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="final-cta__consent">
+          <label class="final-cta__checkbox">
+            <input type="checkbox" name="consent" required />
+            <span class="final-cta__consent-text">
+              Давам съгласието си съобразно новите правила за
+              <a href="#" class="final-cta__consent-link">защита на личните данни</a>
+            </span>
+          </label>
+
+          <button class="final-cta__submit btn" type="submit">{webinar.ctaLabel}</button>
+          <p class="final-cta__status" role="status" aria-live="polite" hidden></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final-cta {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .final-cta__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .final-cta__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .final-cta__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(119deg, rgba(165, 196, 214, 0.85) 12.1%, rgba(249, 221, 222, 0.85) 80.8%);
+  }
+
+  .final-cta__inner {
+    position: relative;
+    z-index: 1;
+    padding-top: 7em; /* 112px */
+    padding-bottom: 7em;
+  }
+
+  .final-cta__grid {
+    display: grid;
+    grid-template-columns: 1fr 39.375em; /* form fixed ~630px */
+    gap: 2em; /* 32px */
+    align-items: stretch;
+  }
+
+  /* Shared glass panel */
+  .final-cta__info,
+  .final-cta__form {
+    border-radius: 1.875em; /* 30px */
+    backdrop-filter: blur(20px);
+  }
+
+  .final-cta__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.125em; /* 18px */
+    padding: 2.625em; /* 42px */
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    background: linear-gradient(-90deg, rgba(255, 255, 255, 0.18) 1.76%, rgba(255, 255, 255, 0.1) 98.47%);
+  }
+
+  .final-cta__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em; /* 24px */
+  }
+
+  .final-cta__title {
+    font-size: 2.625em; /* 42px */
+    font-weight: 500;
+    line-height: 1.3;
+    color: #1c1c1c;
+  }
+
+  .final-cta__eyebrow {
+    display: block;
+    width: 2.5em;
+    height: 2px;
+    background-color: var(--color-primary);
+  }
+
+  .final-cta__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.25em; /* 36px */
+    row-gap: 1em; /* 16px */
+    padding: 1em 1.25em;
+  }
+
+  .final-cta__detail {
+    display: flex;
+    align-items: center;
+    gap: 1.1em; /* ~17.7px */
+  }
+
+  .final-cta__detail img {
+    flex-shrink: 0;
+    width: 2.25em; /* 36px */
+    height: 2.25em;
+  }
+
+  .final-cta__detail-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+  }
+
+  .final-cta__detail-label {
+    font-size: 1.125em; /* 18px */
+    color: var(--color-text-secondary);
+  }
+
+  .final-cta__detail-value {
+    font-size: 1.25em; /* 20px */
+    font-weight: 500;
+    color: #1c1c1c;
+  }
+
+  .final-cta__countdown {
+    margin-top: auto;
+    padding: 1.125em 2.25em; /* 18px 36px */
+    border: 1px solid #ffffff;
+    border-radius: var(--radius-md);
+    background: linear-gradient(-90deg, rgba(255, 255, 255, 0.42) 1.76%, rgba(255, 255, 255, 0.7) 98.47%);
+  }
+
+  /* ---- Form ---- */
+  .final-cta__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3em; /* 48px */
+    padding: 3.5em 3.75em; /* 56px 60px */
+    border: 1px solid #ffffff;
+    background: linear-gradient(-90deg, rgba(255, 255, 255, 0.42) 1.76%, rgba(255, 255, 255, 0.7) 98.47%);
+  }
+
+  .final-cta__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25em; /* 20px */
+  }
+
+  .final-cta__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75em; /* 12px */
+  }
+
+  .final-cta__label {
+    padding-left: 1em;
+    font-size: 0.875em; /* 14px */
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+
+  .final-cta__input {
+    width: 100%;
+    padding: 0.875em 1em; /* 14px 16px */
+    font-size: 1em; /* 16px */
+    color: #1c1c1c;
+    background: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 1.5em; /* 24px */
+    transition: border-color var(--transition-fast);
+  }
+
+  .final-cta__input::placeholder {
+    color: #909090;
+  }
+
+  .final-cta__input:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .final-cta__input[aria-invalid="true"] {
+    border-color: var(--color-primary);
+  }
+
+  .final-cta__consent {
+    display: flex;
+    flex-direction: column;
+    gap: 2em; /* 32px */
+  }
+
+  .final-cta__checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75em; /* 12px */
+    cursor: pointer;
+  }
+
+  .final-cta__checkbox input {
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.25em;
+    accent-color: var(--color-primary);
+  }
+
+  .final-cta__consent-text {
+    font-size: 0.875em; /* 14px */
+    line-height: 1.5;
+    color: #484848;
+  }
+
+  .final-cta__consent-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .final-cta__submit {
+    width: 100%;
+    border-radius: 2em; /* 33px */
+    box-shadow: 0px 5px 15px rgba(169, 8, 49, 0.4);
+  }
+
+  .final-cta__status {
+    margin: 0;
+    font-size: 0.95em;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .final-cta__status[data-state="success"] {
+    color: #1a7f37;
+  }
+
+  .final-cta__status[data-state="error"] {
+    color: var(--color-primary);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    .final-cta__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .final-cta__title {
+      font-size: 2.1em;
+    }
+
+    .final-cta__countdown {
+      margin-top: 1em;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .final-cta__inner {
+      padding-top: 3em;
+      padding-bottom: 3em;
+    }
+
+    .final-cta__info,
+    .final-cta__form {
+      padding: 1.75em 1.5em;
+    }
+
+    .final-cta__title {
+      font-size: 1.7em;
+    }
+
+    .final-cta__details {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const form = document.getElementById("register-form") as HTMLFormElement | null;
+  if (form) {
+    const status = form.querySelector<HTMLElement>(".final-cta__status");
+
+    const show = (message: string, state: "success" | "error") => {
+      if (!status) return;
+      status.textContent = message;
+      status.dataset.state = state;
+      status.hidden = false;
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      // Native constraint validation (required, email format, consent)
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        show("Моля, попълни всички задължителни полета.", "error");
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      // TODO: connect to your registration backend / form service.
+      // e.g. POST `data` to a Vercel serverless function, Formspree, or a CRM webhook.
+      // const res = await fetch("/api/register", { method: "POST", body: JSON.stringify(data) });
+      void data;
+
+      show("Благодарим! Регистрацията ти е приета. Ще получиш детайли по имейл.", "success");
+      form.reset();
+    });
+  }
+</script>

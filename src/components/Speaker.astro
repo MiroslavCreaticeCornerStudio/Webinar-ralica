@@ -1,0 +1,169 @@
+---
+const bullets = [
+  "От стартиращ брокер до изпълнителен директор на Home2U, Ралица Ценова има над 12 години опит в недвижимите имоти и реални резултати зад гърба си.",
+  "Още в началото на кариерата си тя се отличава с рекорден брой продажби, а по-късно изгражда един от най-силните екипи в компанията.",
+  "Днес Ралица обучава нови брокери, развива мениджъри и знае от първо лице какво е нужно, за да затваряш сделки с истински мащаб.",
+];
+---
+
+<section class="speaker" id="speaker">
+  <div class="speaker__inner container container--padded">
+    <div class="speaker__media">
+      <img
+        src="/assets/images/speaker-panel.png"
+        alt="Ралица Ценова, изпълнителен директор на Home2U"
+        width="626"
+        height="602"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="speaker__info">
+      <div class="speaker__header">
+        <span class="speaker__tag">За лектора</span>
+        <div class="speaker__details">
+          <h2 class="speaker__name">Коя е Ралица Ценова?</h2>
+          <p class="speaker__role">Изпълнителен директор Home2U</p>
+        </div>
+      </div>
+
+      <div class="speaker__bullets">
+        {bullets.map((text) => <p class="speaker__bullet">{text}</p>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .speaker {
+    width: 100%;
+    background: var(--color-bg-white);
+  }
+
+  .speaker__inner {
+    display: flex;
+    align-items: center;
+    gap: 2em; /* 32px */
+    padding-top: 5em; /* 80px */
+    padding-bottom: 5em;
+  }
+
+  .speaker__media {
+    flex-shrink: 0;
+    width: 39.125em; /* 626px */
+    border-radius: 1.875em; /* 30px */
+    overflow: hidden;
+  }
+
+  .speaker__media img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .speaker__info {
+    flex: 1 1 0;
+    min-width: 0;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.25em; /* 36px */
+    padding: 2.25em 2.625em 3em; /* 36px 42px 48px */
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 1.875em;
+    background: linear-gradient(-90deg, rgba(255, 255, 255, 0.07) 1.76%, rgba(255, 255, 255, 0.04) 98.47%);
+    backdrop-filter: blur(20px);
+  }
+
+  .speaker__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75em; /* 28px */
+  }
+
+  .speaker__tag {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5em 1.25em;
+    font-size: 0.875em; /* 14px */
+    color: #1c1c1c;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(2px);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-xl);
+    line-height: 1.5;
+  }
+
+  .speaker__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em; /* 8px */
+  }
+
+  .speaker__name {
+    font-size: 2.625em; /* 42px */
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-primary);
+    text-transform: uppercase;
+  }
+
+  .speaker__role {
+    font-size: 1.125em; /* 18px */
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000000;
+  }
+
+  .speaker__bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75em; /* 12px */
+  }
+
+  .speaker__bullet {
+    font-size: 1em; /* 16px */
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    .speaker__inner {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .speaker__media {
+      width: 100%;
+      max-width: 34em;
+      margin-inline: auto;
+    }
+
+    .speaker__info {
+      align-self: stretch;
+    }
+
+    .speaker__name {
+      font-size: 2.1em;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .speaker__inner {
+      padding-top: 3em;
+      padding-bottom: 3em;
+    }
+
+    .speaker__info {
+      padding: 1.75em 1.5em 2em;
+    }
+
+    .speaker__name {
+      font-size: 1.8em;
+    }
+  }
+</style>

@@ -1,0 +1,192 @@
+---
+import { webinar } from "../data/webinar";
+
+const navLinks = [
+  { label: "За кого е подходящо", href: "#who" },
+  { label: "Какво ще научиш", href: "#learn" },
+  { label: "За лектора", href: "#speaker" },
+];
+---
+
+<header class="header">
+  <div class="header__inner container container--padded">
+    <a class="header__logo" href="/" aria-label={`${webinar.brand} начало`}>
+      <img src="/assets/images/logo-home2u-icon.svg" alt="" width="35" height="35" />
+      <img src="/assets/images/logo-home2u-text.svg" alt={webinar.brand} width="145" height="35" />
+    </a>
+
+    <nav class="header__nav" aria-label="Основна навигация">
+      {navLinks.map((link) => <a class="header__nav-link" href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <a class="header__cta btn-outline" href="#register">{webinar.ctaLabel}</a>
+
+    <button class="header__toggle" type="button" aria-label="Меню" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="header__toggle-bar"></span>
+      <span class="header__toggle-bar"></span>
+      <span class="header__toggle-bar"></span>
+    </button>
+  </div>
+
+  <div class="header__mobile" id="mobile-menu" hidden>
+    <nav class="header__mobile-nav" aria-label="Мобилна навигация">
+      {navLinks.map((link) => <a class="header__mobile-link" href={link.href}>{link.label}</a>)}
+      <a class="header__mobile-cta btn-outline" href="#register">{webinar.ctaLabel}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.25em;
+    padding-bottom: 1.25em;
+    gap: 1.5em;
+  }
+
+  .header__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    flex-shrink: 0;
+  }
+
+  .header__logo img {
+    height: 2.2em;
+    width: auto;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 2.5em; /* 40px */
+  }
+
+  .header__nav-link {
+    font-size: 0.875em; /* 14px */
+    font-weight: 500;
+    color: #1c1c1c;
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+  }
+
+  .header__nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  .header__cta {
+    font-size: 1em;
+    flex-shrink: 0;
+  }
+
+  /* Hamburger — hidden on desktop */
+  .header__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3em;
+    width: 2.75em;
+    height: 2.75em;
+    padding: 0.6em;
+    background: transparent;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .header__toggle-bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary);
+    border-radius: 2px;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+  }
+
+  .header__mobile {
+    display: none;
+  }
+
+  /* Tablet & below — collapse to hamburger */
+  @media (max-width: 991px) {
+    .header__nav,
+    .header__cta {
+      display: none;
+    }
+
+    .header__toggle {
+      display: flex;
+    }
+
+    .header__mobile {
+      display: block;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height var(--transition-base);
+    }
+
+    .header__mobile[data-open="true"] {
+      max-height: 24em;
+    }
+
+    .header__mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25em;
+      padding: 1.5em var(--container-padding) 2em;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+    }
+
+    .header__mobile-link {
+      font-size: 1.125em;
+      font-weight: 500;
+      color: #1c1c1c;
+    }
+
+    .header__mobile-cta {
+      align-self: flex-start;
+      font-size: 1.125em;
+    }
+
+    .header__toggle[aria-expanded="true"] .header__toggle-bar:nth-child(1) {
+      transform: translateY(0.5em) rotate(45deg);
+    }
+    .header__toggle[aria-expanded="true"] .header__toggle-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .header__toggle[aria-expanded="true"] .header__toggle-bar:nth-child(3) {
+      transform: translateY(-0.5em) rotate(-45deg);
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".header__toggle");
+  const menu = document.getElementById("mobile-menu");
+
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      menu.dataset.open = String(!open);
+      menu.hidden = false; // keep in flow for the height transition
+    });
+
+    // Close the menu after tapping a link
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        toggle.setAttribute("aria-expanded", "false");
+        menu.dataset.open = "false";
+      });
+    });
+  }
+</script>

@@ -1,0 +1,143 @@
+---
+// Live countdown to the webinar start. Renders 4 units with separators.
+// `variant` switches between the compact hero pill and the larger CTA layout.
+interface Props {
+  targetISO: string;
+  variant?: "hero" | "cta";
+}
+const { targetISO, variant = "hero" } = Astro.props;
+
+const units = [
+  { key: "days", label: "Дни", value: "00" },
+  { key: "hours", label: "часа", value: "00" },
+  { key: "minutes", label: "минути", value: "00" },
+  { key: "seconds", label: "секунди", value: "00" },
+];
+---
+
+<div class={`countdown countdown--${variant}`} data-countdown data-target={targetISO} role="timer" aria-label="Оставащо време до уебинара">
+  {
+    units.map((u, i) => (
+      <>
+        <div class="countdown__unit">
+          <span class="countdown__value" data-unit={u.key}>{u.value}</span>
+          <span class="countdown__label">{u.label}</span>
+        </div>
+        {i < units.length - 1 && <span class="countdown__sep" aria-hidden="true" />}
+      </>
+    ))
+  }
+</div>
+
+<style>
+  .countdown {
+    display: flex;
+    align-items: center;
+  }
+
+  .countdown__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .countdown__value {
+    color: var(--color-primary);
+    line-height: 0.93;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .countdown__label {
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .countdown__sep {
+    width: 1px;
+    align-self: stretch;
+    background-color: var(--color-border);
+  }
+
+  /* Hero pill — compact, white glass box, 320px wide */
+  .countdown--hero {
+    justify-content: space-between;
+    width: 20em; /* 320px */
+    padding: 0.75em 1.75em; /* 12px 28px */
+    border: 1px solid #ffffff;
+    border-radius: var(--radius-md);
+    background: linear-gradient(270deg, rgba(255, 255, 255, 0.42) 1.76%, rgba(255, 255, 255, 0.7) 98.47%);
+  }
+
+  .countdown--hero .countdown__value {
+    font-size: 1.5em; /* 24px */
+    font-weight: 400;
+  }
+
+  .countdown--hero .countdown__label {
+    font-size: 0.5em; /* 8px */
+    font-weight: 500;
+  }
+
+  .countdown--hero .countdown__sep {
+    height: 1.5em;
+    align-self: center;
+  }
+
+  /* CTA variant — larger values, full-width with separators */
+  .countdown--cta {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .countdown--cta .countdown__value {
+    font-size: 2.17em; /* ~34.7px */
+    font-weight: 400;
+  }
+
+  .countdown--cta .countdown__label {
+    font-size: 0.72em; /* ~11.6px */
+    font-weight: 500;
+  }
+
+  .countdown--cta .countdown__sep {
+    height: 2.4em; /* ~38px */
+    align-self: center;
+  }
+</style>
+
+<script>
+  function pad(n: number): string {
+    return String(n).padStart(2, "0");
+  }
+
+  function tick(): void {
+    const nodes = document.querySelectorAll<HTMLElement>("[data-countdown]");
+    nodes.forEach((el) => {
+      const target = new Date(el.dataset.target ?? "").getTime();
+      if (Number.isNaN(target)) return;
+      let diff = Math.max(0, target - Date.now());
+      const day = Math.floor(diff / 86_400_000);
+      diff -= day * 86_400_000;
+      const hr = Math.floor(diff / 3_600_000);
+      diff -= hr * 3_600_000;
+      const min = Math.floor(diff / 60_000);
+      diff -= min * 60_000;
+      const sec = Math.floor(diff / 1000);
+
+      const set = (key: string, val: number) => {
+        const node = el.querySelector<HTMLElement>(`[data-unit="${key}"]`);
+        if (node) node.textContent = pad(val);
+      };
+      set("days", day);
+      set("hours", hr);
+      set("minutes", min);
+      set("seconds", sec);
+    });
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>

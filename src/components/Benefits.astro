@@ -1,0 +1,133 @@
+---
+const benefits = [
+  { icon: "benefit-icon-1-usercirclegear.svg", title: "„Брокер на месеца“", text: "Многократен носител на отличието „Брокер на месеца“" },
+  { icon: "benefit-icon-2-trophy.svg", title: "Най-много сделки", text: "Рекорд за най-много лични и екипни сделки за една година" },
+  { icon: "benefit-icon-3-certificate.svg", title: "Стотици обучения", text: "Стотици обучени брокери и мениджъри" },
+  { icon: "benefit-icon-4-handshake.svg", title: "Сделки за милиони", text: "Множество затворени сделки за милиони" },
+];
+---
+
+<section class="benefits">
+  <div class="benefits__inner container container--padded">
+    <ul class="benefits__list">
+      {
+        benefits.map((b) => (
+          <li class="benefits__item">
+            <span class="benefits__icon-box">
+              <img src={`/assets/images/${b.icon}`} alt="" width="34" height="34" />
+            </span>
+            <div class="benefits__text">
+              <p class="benefits__title">{b.title}</p>
+              <p class="benefits__desc">{b.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .benefits {
+    width: 100%;
+    background: var(--color-bg-white);
+  }
+
+  .benefits__inner {
+    padding-top: 1.5em; /* 24px */
+    padding-bottom: 5em; /* 80px */
+  }
+
+  .benefits__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: start;
+  }
+
+  .benefits__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em; /* 24px */
+    padding-inline: 1em;
+    text-align: center;
+  }
+
+  /* Short centered vertical divider between columns */
+  .benefits__item + .benefits__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 6.75em; /* 108px */
+    background-color: var(--color-border);
+  }
+
+  .benefits__icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75em; /* 12px */
+    background: #ffffff;
+    border-radius: 0.6875em; /* 11px */
+  }
+
+  .benefits__icon-box img {
+    width: 2.125em; /* ~34px */
+    height: 2.125em;
+  }
+
+  .benefits__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em; /* 8px */
+  }
+
+  .benefits__title {
+    font-size: 1.375em; /* 22px */
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-primary);
+  }
+
+  .benefits__desc {
+    font-size: 1.125em; /* 18px */
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    .benefits__list {
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 2.5em;
+    }
+
+    /* Reset desktop dividers, draw one only before the right-hand column */
+    .benefits__item + .benefits__item::before {
+      content: none;
+    }
+
+    .benefits__item:nth-child(even)::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 6.75em;
+      background-color: var(--color-border);
+    }
+  }
+
+  /* Per Figma annotation: section is not shown on mobile */
+  @media (max-width: 767px) {
+    .benefits {
+      display: none;
+    }
+  }
+</style>

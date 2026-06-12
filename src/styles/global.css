@@ -6,12 +6,12 @@
 /* Desktop */
 :root {
   --size-unit: 16; /* body font-size in design — no px */
-  --size-container-ideal: 1440; /* Figma frame width — set during Phase 0 */
+  --size-container-ideal: 1440; /* Figma frame width (Home2U homepage) */
   --size-container-min: 992px;
   --size-container-max: 1440px;
   --size-container: clamp(var(--size-container-min), 100vw, var(--size-container-max));
   --size-font: calc(var(--size-container) / (var(--size-container-ideal) / var(--size-unit)));
-  --container-padding: 3.25em;
+  --container-padding: 5em; /* 80px — Figma section inset */
 }
 
 /* Tablet */
@@ -45,23 +45,35 @@
 }
 
 /* ==========================================================================
-   Design Tokens — Update per project (Phase 0)
+   Design Tokens — Home2U Webinar ("Сделки за милиони")
    ========================================================================== */
 
 :root {
   /* Colors */
-  --color-primary: #000000;
-  --color-accent: #000000;
-  --color-bg-white: #ffffff;
-  --color-bg-dark: #000000;
-  --color-text-primary: #000000;
-  --color-text-secondary: #666666;
+  --color-primary: #a90831;        /* brand crimson — accents, CTAs, highlights */
+  --color-primary-dark: #880425;   /* gradient start on filled CTA */
+  --color-accent: #a90831;
+  --color-heading: #1c1c1c;        /* headlines */
+  --color-text-primary: #1c1c1c;
+  --color-text-secondary: #4f4f4f; /* body copy */
   --color-text-white: #ffffff;
+  --color-bg-white: #ffffff;
+  --color-bg-light: #f4f4f4;       /* event-info cards, soft sections */
+  --color-bg-dark: #1c1c1c;
   --color-border: #e0e0e0;
+  --color-border-accent: #a90831;
 
-  /* Typography — update font imports in your root layout file */
-  --font-heading: system-ui, sans-serif;
-  --font-body: system-ui, sans-serif;
+  /* Hero / decorative gradients */
+  --gradient-hero: linear-gradient(129deg, rgba(165, 196, 214, 0.8) 12.5%, rgba(252, 235, 236, 0.8) 64.9%);
+  --gradient-cta: linear-gradient(270deg, #880425 1.76%, #a90931 98.47%);
+
+  /* Typography
+     Design uses "Sharp Grotesk Cyr" (Book 400 / Medium 500) — a commercial
+     typeface. Substituted with Inter (full Cyrillic, neutral grotesque).
+     Drop licensed Sharp Grotesk woff2 files in /public/assets/fonts and swap
+     these vars to restore the exact brand type. */
+  --font-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Spacing scale */
   --spacing-xs: 0.25em;   /* 4px */
@@ -71,15 +83,20 @@
   --spacing-xl: 2em;      /* 32px */
   --spacing-2xl: 2.5em;   /* 40px */
   --spacing-3xl: 3em;     /* 48px */
-  --spacing-4xl: 3.25em;  /* 52px */
-  --spacing-5xl: 4em;     /* 64px */
+  --spacing-4xl: 3.75em;  /* 60px */
+  --spacing-5xl: 5em;     /* 80px */
   --spacing-section: 6.25em; /* 100px */
 
   /* Border radius */
   --radius-sm: 0.25em;    /* 4px */
-  --radius-md: 0.5em;     /* 8px */
-  --radius-lg: 1em;       /* 16px */
+  --radius-md: 0.75em;    /* 12px */
+  --radius-lg: 1.25em;    /* 20px */
+  --radius-xl: 2.5em;     /* 40px */
   --radius-pill: 3em;     /* 48px */
+
+  /* Shadows */
+  --shadow-cta: 0px 15px 15px rgba(169, 8, 49, 0.19);
+  --shadow-card: 0px 21px 42px rgba(169, 8, 49, 0.19);
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -143,6 +160,9 @@ ol {
   list-style: none;
 }
 
+/* Headings inherit font-size/weight by default so the browser's UA defaults
+   (h1 = 2em, bold, etc.) don't compound with the fluid em system and render
+   headings ~2× too large. Each component sets explicit size/weight from Figma. */
 h1,
 h2,
 h3,
@@ -150,7 +170,10 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  line-height: 1.143;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.2;
+  color: var(--color-heading);
   overflow-wrap: break-word;
 }
 
@@ -166,6 +189,9 @@ p {
   width: 100%;
   max-width: var(--size-container);
   margin-inline: auto;
+}
+
+.container--padded {
   padding-inline: var(--container-padding);
 }
 
@@ -191,25 +217,56 @@ p {
   text-transform: uppercase;
 }
 
-/* Button — primary dark */
+/* Button — primary filled (gradient crimson pill) */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: fit-content;
-  height: 3em;
-  padding-inline: 1em;
-  background-color: var(--color-bg-dark);
+  padding: 1.25em 4em;
+  background: var(--gradient-cta);
   color: var(--color-text-white);
   font-family: var(--font-body);
   font-size: 1em;
-  font-weight: 400;
-  line-height: 1.5;
+  font-weight: 500;
+  line-height: 1.4;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-cta);
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.btn:hover {
+  opacity: 0.92;
+}
+
+/* Button — outline pill */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 1em 1.5em;
+  background: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
 }
 
 /* ==========================================================================
@@ -244,8 +301,4 @@ p {
   font-weight: 500;
   border-radius: var(--radius-sm);
   text-decoration: none;
-}
-
-.btn:hover {
-  opacity: 0.85;
 }

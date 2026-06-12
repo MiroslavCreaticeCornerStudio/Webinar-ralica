@@ -1,0 +1,339 @@
+---
+import Header from "./Header.astro";
+import Countdown from "./Countdown.astro";
+import { webinar } from "../data/webinar";
+
+const eventCards = [
+  { icon: "icon-calendar.svg", label: "Дата:", value: "18.06.2026г.", alt: "Календар" },
+  { icon: "icon-clock.svg", label: "Час:", value: "18:00", alt: "Часовник" },
+  { icon: "icon-map-pin.svg", label: "Къде", value: "Онлайн в Zoom", alt: "Локация" },
+  { icon: "icon-hourglass.svg", label: "Времетраене:", value: "60 мин.", alt: "Времетраене" },
+];
+---
+
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <img src="/assets/images/hero-bg-cityscape.jpg" alt="" width="1440" height="1591" loading="eager" />
+  </div>
+
+  <div class="hero__fg">
+    <Header />
+
+    <div class="hero__inner container container--padded">
+      <div class="hero__layout">
+        <div class="hero__content">
+          <div class="hero__heading">
+            <span class="hero__tagline">Безплатен уебинар с Ралица Ценова</span>
+            <h1 class="hero__title">
+              <span class="hero__title-accent">Сделки за милиони</span>
+              <span class="hero__title-main">Формулата зад рекордния успех</span>
+            </h1>
+            <p class="hero__subtext">
+              Рекордните резултати в имотите не идват само с късмет. Научи как се
+              изгражда подходът, увереността и средата, които водят до големите
+              сделки.
+            </p>
+          </div>
+
+          <div class="hero__timer">
+            <a class="hero__cta btn" href="#register">{webinar.ctaLabel}</a>
+            <Countdown targetISO={webinar.startISO} variant="hero" />
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <img
+            class="hero__speaker"
+            src="/assets/images/hero-speaker-ralitsa.png"
+            alt="Ралица Ценова, лектор на уебинара"
+            width="645"
+            height="838"
+            loading="eager"
+          />
+          <span class="hero__badge hero__badge--zoom">онлайн в zoom</span>
+          <span class="hero__badge hero__badge--norec">БЕЗ ЗАПИС</span>
+        </div>
+      </div>
+
+      <ul class="hero__events">
+        {
+          eventCards.map((card) => (
+            <li class="hero__event">
+              <img class="hero__event-icon" src={`/assets/images/${card.icon}`} alt={card.alt} width="28" height="28" />
+              <div class="hero__event-text">
+                <span class="hero__event-label">{card.label}</span>
+                <span class="hero__event-value">{card.value}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: var(--gradient-hero);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__fg {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__inner {
+    padding-bottom: 3.75em;
+  }
+
+  .hero__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 37.3em) 1fr; /* 597px text column */
+    align-items: stretch;
+    gap: 2em;
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4em; /* 64px between heading block and timer */
+    padding-top: 1.5em;
+  }
+
+  .hero__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75em; /* 28px */
+    align-items: flex-start;
+  }
+
+  .hero__tagline {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5em 1.25em; /* 8px 20px */
+    font-size: 0.875em; /* 14px */
+    color: #1c1c1c;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(2px);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-xl);
+    line-height: 1.5;
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+    font-size: 3.25em; /* 52px */
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+  }
+
+  .hero__title-accent {
+    color: var(--color-primary);
+  }
+
+  .hero__title-main {
+    color: #1c1c1c;
+  }
+
+  .hero__subtext {
+    font-size: 1.125em; /* 18px */
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    max-width: 33.2em;
+  }
+
+  .hero__timer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25em; /* 20px */
+    align-items: flex-start;
+  }
+
+  .hero__cta {
+    border-radius: 2em; /* 33px pill */
+  }
+
+  /* Right visual — speaker + floating badges */
+  .hero__visual {
+    position: relative;
+    align-self: end;
+    min-height: 37.8em;
+  }
+
+  .hero__speaker {
+    position: absolute;
+    right: -1em;
+    bottom: 0;
+    width: auto;
+    height: 100%;
+    max-height: 41em;
+    object-fit: contain;
+    object-position: bottom right;
+  }
+
+  .hero__badge {
+    position: absolute;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75em 1em; /* 12px 16px */
+    font-size: 0.875em; /* 14px */
+    font-weight: 500;
+    color: var(--color-primary);
+    background: linear-gradient(-29deg, rgba(231, 241, 248, 0.7), rgba(248, 234, 237, 0.7));
+    backdrop-filter: blur(5.6px);
+    border: 1.4px solid #ffffff;
+    border-radius: 1.1em;
+    box-shadow: var(--shadow-card);
+    white-space: nowrap;
+  }
+
+  .hero__badge--zoom {
+    top: 3.2em;
+    text-transform: uppercase;
+  }
+
+  .hero__badge--norec {
+    top: 7em;
+  }
+
+  /* Event info cards */
+  .hero__events {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8em; /* 13px */
+    margin-top: 4em;
+  }
+
+  .hero__event {
+    display: flex;
+    align-items: center;
+    gap: 0.75em; /* 12px */
+    padding: 1em 1.25em; /* 16px 20px */
+    background: var(--color-bg-light);
+    border-radius: var(--radius-md);
+  }
+
+  .hero__event-icon {
+    flex-shrink: 0;
+    width: auto;
+    height: 1.75em; /* 28px */
+  }
+
+  .hero__event-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+  }
+
+  .hero__event-label {
+    font-size: 0.875em; /* 14px */
+    color: var(--color-text-secondary);
+  }
+
+  .hero__event-value {
+    font-size: 1em; /* 16px */
+    font-weight: 500;
+    color: #1c1c1c;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 991px) {
+    .hero__layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5em;
+    }
+
+    .hero__title {
+      font-size: 2.75em;
+    }
+
+    .hero__visual {
+      min-height: 30em;
+    }
+
+    .hero__events {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1em;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__content {
+      gap: 2.5em;
+      padding-top: 0.5em;
+      order: 2;
+    }
+
+    .hero__visual {
+      order: 1;
+      min-height: 24em;
+      align-self: center;
+      width: 100%;
+    }
+
+    .hero__speaker {
+      position: relative;
+      right: auto;
+      margin-inline: auto;
+      height: auto;
+      max-height: 24em;
+    }
+
+    .hero__badge--zoom {
+      top: 1em;
+      left: 0;
+    }
+
+    .hero__badge--norec {
+      top: 4.5em;
+      left: 0;
+    }
+
+    .hero__title {
+      font-size: 2.4em;
+    }
+
+    .hero__cta {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .hero__title {
+      font-size: 2em;
+    }
+
+    .hero__events {
+      grid-template-columns: 1fr;
+    }
+
+    .countdown--hero {
+      width: 100%;
+    }
+  }
+</style>
