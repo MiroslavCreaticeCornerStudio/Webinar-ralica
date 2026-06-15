@@ -1,4 +1,26 @@
 /* ==========================================================================
+   Fonts — Sharp Grotesk Cyr (self-hosted: Book → 400, Medium → 500)
+   ========================================================================== */
+
+@font-face {
+  font-family: "Sharp Grotesk Cyr";
+  src: url("/assets/fonts/SharpGroteskCyrBook-20.woff2") format("woff2"),
+       url("/assets/fonts/SharpGroteskCyrBook-20.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sharp Grotesk Cyr";
+  src: url("/assets/fonts/SharpGroteskCyrMedium-20.woff2") format("woff2"),
+       url("/assets/fonts/SharpGroteskCyrMedium-20.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
    Fluid Scaling System
    Viewport-based scaling — all em values scale automatically.
    ========================================================================== */
@@ -67,13 +89,9 @@
   --gradient-hero: linear-gradient(129deg, rgba(165, 196, 214, 0.8) 12.5%, rgba(252, 235, 236, 0.8) 64.9%);
   --gradient-cta: linear-gradient(270deg, #880425 1.76%, #a90931 98.47%);
 
-  /* Typography
-     Design uses "Sharp Grotesk Cyr" (Book 400 / Medium 500) — a commercial
-     typeface. Substituted with Inter (full Cyrillic, neutral grotesque).
-     Drop licensed Sharp Grotesk woff2 files in /public/assets/fonts and swap
-     these vars to restore the exact brand type. */
-  --font-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Typography — self-hosted Sharp Grotesk Cyr (Book 400 / Medium 500) */
+  --font-heading: 'Sharp Grotesk Cyr', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Sharp Grotesk Cyr', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Spacing scale */
   --spacing-xs: 0.25em;   /* 4px */
@@ -301,4 +319,29 @@ p {
   font-weight: 500;
   border-radius: var(--radius-sm);
   text-decoration: none;
+}
+
+/* ==========================================================================
+   Scroll-reveal initial state
+   Only active when JS is available AND reduced-motion is NOT requested
+   (the `gsap-on` class is set synchronously in <head>). GSAP animates these
+   to their visible state; with no JS / reduced motion they stay fully visible.
+   ========================================================================== */
+html.gsap-on :is(
+  .hero__tagline,
+  .hero__title,
+  .hero__subtext,
+  .hero__timer,
+  .hero__events,
+  .who__card,
+  .learn__header,
+  .learn__card,
+  .cta-band__card,
+  .speaker__media,
+  .speaker__info,
+  .benefits__item,
+  .final-cta__info,
+  .final-cta__form
+) {
+  opacity: 0;
 }

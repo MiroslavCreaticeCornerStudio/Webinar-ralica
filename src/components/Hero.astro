@@ -13,7 +13,7 @@ const eventCards = [
 
 <section class="hero">
   <div class="hero__bg" aria-hidden="true">
-    <img src="/assets/images/hero-bg-cityscape.jpg" alt="" width="1440" height="1591" loading="eager" />
+    <img src="/assets/images/hero-bg-ralica-webinar.jpg" alt="" width="2400" height="1416" loading="eager" />
   </div>
 
   <div class="hero__fg">
@@ -42,18 +42,19 @@ const eventCards = [
         </div>
 
         <div class="hero__visual">
-          <img
-            class="hero__speaker"
-            src="/assets/images/hero-speaker-ralitsa.png"
-            alt="Ралица Ценова, лектор на уебинара"
-            width="645"
-            height="838"
-            loading="eager"
-          />
           <span class="hero__badge hero__badge--zoom">онлайн в zoom</span>
           <span class="hero__badge hero__badge--norec">БЕЗ ЗАПИС</span>
         </div>
       </div>
+
+      <img
+        class="hero__speaker-mobile"
+        src="/assets/images/hero-speaker-mobile.png"
+        alt="Ралица Ценова, лектор на уебинара"
+        width="637"
+        height="1000"
+        loading="lazy"
+      />
 
       <ul class="hero__events">
         {
@@ -84,7 +85,6 @@ const eventCards = [
     position: absolute;
     inset: 0;
     z-index: 0;
-    opacity: 0.08;
     pointer-events: none;
   }
 
@@ -92,6 +92,7 @@ const eventCards = [
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
   }
 
   .hero__fg {
@@ -113,7 +114,7 @@ const eventCards = [
   .hero__content {
     display: flex;
     flex-direction: column;
-    gap: 4em; /* 64px between heading block and timer */
+    gap: 2em; /* 32px between heading block and timer */
     padding-top: 1.5em;
   }
 
@@ -178,6 +179,7 @@ const eventCards = [
     position: relative;
     align-self: end;
     min-height: 37.8em;
+    margin-left: 3.75em; /* 60px @1440 — desktop only (reset ≤991px) */
   }
 
   .hero__speaker {
@@ -257,24 +259,48 @@ const eventCards = [
     color: #1c1c1c;
   }
 
+  /* Speaker cutout shown only ≤991px (the baked-in bg speaker is cropped there) */
+  .hero__speaker-mobile {
+    display: none;
+  }
+
   /* ---------- Responsive ---------- */
   @media (max-width: 991px) {
+    .hero__bg img {
+      object-position: left;
+    }
+
     .hero__layout {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 1.5em;
+    }
+
+    .hero__content {
+      width: 100%;
+    }
+
+    .hero__visual {
+      display: none;
+    }
+
+    .hero__speaker-mobile {
+      display: block;
+      width: auto;
+      height: auto;
+      max-height: 30em;
+      margin-top: 1em;
+      margin-bottom: 0;
+      margin-left: auto; /* right-align, like the desktop speaker */
     }
 
     .hero__title {
       font-size: 2.75em;
     }
 
-    .hero__visual {
-      min-height: 30em;
-    }
-
     .hero__events {
       grid-template-columns: repeat(2, 1fr);
       gap: 1em;
+      margin-top: 0; /* cards sit flush under the speaker — no gap */
     }
   }
 

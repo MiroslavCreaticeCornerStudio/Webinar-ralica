@@ -9,7 +9,9 @@ const items = [
 ---
 
 <section class="who" id="who">
-  <img class="who__decoration" src="/assets/images/who-decorative-ellipses.svg" alt="" aria-hidden="true" />
+  <div class="who__decoration-clip" aria-hidden="true">
+    <img class="who__decoration" src="/assets/images/who-decorative-ellipses.svg" alt="" />
+  </div>
 
   <div class="who__inner container container--padded">
     <div class="who__header">
@@ -37,17 +39,27 @@ const items = [
     position: relative;
     width: 100%;
     background: var(--color-bg-white);
+  }
+
+  /* Clips the decorative ellipse without putting overflow:hidden on .who,
+     which would break position:sticky on the header. */
+  .who__decoration-clip {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
   }
 
   .who__decoration {
     position: absolute;
-    top: -3.8em;
-    left: -13.4em;
-    width: 55.75em; /* 892px */
+    top: -20%;
+    left: -30%;
+    width: 100%;
     max-width: none;
     pointer-events: none;
     z-index: 0;
+    height: 100%;
   }
 
   .who__inner {
@@ -67,6 +79,9 @@ const items = [
     gap: 1.25em;
     width: 34em; /* 545px */
     flex-shrink: 0;
+    position: sticky;
+    top: 6em;
+    align-self: flex-start;
   }
 
   .who__eyebrow {
@@ -134,6 +149,11 @@ const items = [
     .who__header,
     .who__list {
       width: 100%;
+    }
+
+    /* Stacked layout — no sticky */
+    .who__header {
+      position: static;
     }
   }
 

@@ -50,10 +50,23 @@ const eventSchema = {
     <Hero />
     <WhoIsItFor />
     <CtaBand />
-    <WhatYouLearn />
-    <Speaker />
-    <Benefits />
+    <div class="bg-learn-speaker">
+      <WhatYouLearn />
+      <Speaker />
+      <Benefits />
+    </div>
     <FinalCta />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  /* Shared background spanning the "What You'll Learn" + "Speaker" + "Benefits"
+     sections, anchored to the bottom (faint cityscape fades up). */
+  .bg-learn-speaker {
+    background-image: url("/assets/images/bg-learn-speaker.jpg");
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% auto;
+  }
+</style>
