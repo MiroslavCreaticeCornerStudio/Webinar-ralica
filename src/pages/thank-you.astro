@@ -1,0 +1,206 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "../components/Footer.astro";
+import { webinar } from "../data/webinar";
+
+const eventCards = [
+  { icon: "icon-calendar.svg", label: "Дата:", value: webinar.date, alt: "Календар" },
+  { icon: "icon-clock.svg", label: "Час:", value: webinar.time, alt: "Часовник" },
+  { icon: "icon-map-pin.svg", label: "Къде", value: webinar.location, alt: "Локация" },
+  { icon: "icon-hourglass.svg", label: "Времетраене:", value: webinar.duration, alt: "Времетраене" },
+];
+---
+
+<BaseLayout
+  title="Благодарим за регистрацията! | Home2U"
+  description="Регистрацията ти за безплатния уебинар „Сделки за милиони“ с Ралица Ценова е приета."
+>
+  <section class="thanks">
+    <header class="thanks__topbar container container--padded">
+      <a class="thanks__logo" href="/" aria-label={`${webinar.brand} начало`}>
+        <img src="/assets/images/logo-home2u-icon.svg" alt="" width="35" height="35" />
+        <img src="/assets/images/logo-home2u-text.svg" alt={webinar.brand} width="145" height="35" />
+      </a>
+    </header>
+
+    <div class="thanks__inner container container--padded">
+      <div class="thanks__card">
+        <span class="thanks__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+
+        <h1 class="thanks__title">Благодарим ти за регистрацията!</h1>
+
+        <p class="thanks__text">
+          Запазихме мястото ти за безплатния уебинар „Сделки за милиони“ с Ралица
+          Ценова. Изпратихме потвърждение и линк за достъп на посочения от теб имейл.
+          Провери и папка „Спам“, ако не го откриеш.
+        </p>
+
+        <ul class="thanks__events">
+          {
+            eventCards.map((card) => (
+              <li class="thanks__event">
+                <img src={`/assets/images/${card.icon}`} alt={card.alt} width="28" height="28" />
+                <div class="thanks__event-text">
+                  <span class="thanks__event-label">{card.label}</span>
+                  <span class="thanks__event-value">{card.value}</span>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <a class="thanks__cta btn" href="/">Обратно към началото</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .thanks {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    background: var(--gradient-hero);
+  }
+
+  .thanks__topbar {
+    display: flex;
+    align-items: center;
+    padding-top: 1.25em;
+    padding-bottom: 1.25em;
+  }
+
+  .thanks__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .thanks__logo img {
+    height: 2.2em;
+    width: auto;
+  }
+
+  .thanks__inner {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3em;
+    padding-bottom: 4em;
+  }
+
+  .thanks__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5em;
+    max-width: 41em;
+    width: 100%;
+    padding: 3.5em 3em;
+    background: linear-gradient(-90deg, rgba(255, 255, 255, 0.6) 1.76%, rgba(255, 255, 255, 0.85) 98.47%);
+    backdrop-filter: blur(15px);
+    border: 1px solid #ffffff;
+    border-radius: 1.875em; /* 30px */
+    box-shadow: var(--shadow-card);
+  }
+
+  .thanks__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5em; /* 72px */
+    height: 4.5em;
+    color: #ffffff;
+    background: var(--gradient-cta);
+    border-radius: 50%;
+    box-shadow: var(--shadow-cta);
+  }
+
+  .thanks__icon svg {
+    width: 2.5em;
+    height: 2.5em;
+  }
+
+  .thanks__title {
+    font-size: 2.5em; /* 40px */
+    font-weight: 500;
+    line-height: 1.2;
+    color: #1c1c1c;
+  }
+
+  .thanks__text {
+    font-size: 1.125em; /* 18px */
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 32em;
+  }
+
+  .thanks__events {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8em;
+    width: 100%;
+    margin-top: 0.5em;
+  }
+
+  .thanks__event {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    padding: 1em 1.25em;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-md);
+  }
+
+  .thanks__event img {
+    flex-shrink: 0;
+    width: auto;
+    height: 1.75em;
+  }
+
+  .thanks__event-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+  }
+
+  .thanks__event-label {
+    font-size: 0.875em;
+    color: var(--color-text-secondary);
+  }
+
+  .thanks__event-value {
+    font-size: 1em;
+    font-weight: 500;
+    color: #1c1c1c;
+  }
+
+  .thanks__cta {
+    margin-top: 0.5em;
+    border-radius: 2em;
+  }
+
+  @media (max-width: 767px) {
+    .thanks__card {
+      padding: 2.5em 1.5em;
+    }
+
+    .thanks__title {
+      font-size: 1.9em;
+    }
+
+    .thanks__events {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -65,7 +65,7 @@ const details = [
             <input type="checkbox" name="consent" required />
             <span class="final-cta__consent-text">
               Давам съгласието си съобразно новите правила за
-              <a href="#" class="final-cta__consent-link">защита на личните данни</a>
+              <a href="/privacy" class="final-cta__consent-link">защита на личните данни</a>
             </span>
           </label>
 
@@ -291,6 +291,11 @@ const details = [
     box-shadow: 0px 5px 15px rgba(169, 8, 49, 0.4);
   }
 
+  .final-cta__submit:disabled {
+    opacity: 0.7;
+    cursor: progress;
+  }
+
   .final-cta__status {
     margin: 0;
     font-size: 0.95em;
@@ -354,6 +359,8 @@ const details = [
       status.hidden = false;
     };
 
+    const submit = form.querySelector<HTMLButtonElement>(".final-cta__submit");
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -364,15 +371,43 @@ const details = [
         return;
       }
 
+      const original = submit?.textContent ?? "";
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = "Изпращане…";
+      }
+      if (status) status.hidden = true;
+
       const data = Object.fromEntries(new FormData(form).entries());
 
-      // TODO: connect to your registration backend / form service.
-      // e.g. POST `data` to a Vercel serverless function, Formspree, or a CRM webhook.
-      // const res = await fetch("/api/register", { method: "POST", body: JSON.stringify(data) });
-      void data;
+      // Attach ad attribution (fbclid/UTMs) captured on landing, for conversion tracking
+      let attribution: Record<string, string> = {};
+      try {
+        attribution = JSON.parse(localStorage.getItem("h2u_attribution") || "{}");
+      } catch {
+        attribution = {};
+      }
 
-      show("Благодарим! Регистрацията ти е приета. Ще получиш детайли по имейл.", "success");
-      form.reset();
+      try {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ ...data, attribution }),
+        });
+        const result = await res.json().catch(() => ({}));
+        if (res.ok && result.ok) {
+          window.location.href = "/thank-you"; // success
+          return;
+        }
+        show(result.error || "Възникна грешка. Моля, опитай отново.", "error");
+      } catch {
+        show("Възникна грешка при свързване. Опитай отново.", "error");
+      }
+
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = original;
+      }
     });
   }
 </script>
