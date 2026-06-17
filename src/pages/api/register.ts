@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 // Astro v6 on Cloudflare: runtime env/secrets come from `cloudflare:workers`.
 // In dev the adapter populates this from `.env`; in production from Worker secrets.
 import { env } from "cloudflare:workers";
-import { registerForWebinar, diagnose, type ZoomEnv } from "../../lib/zoom";
+import { registerForWebinar, type ZoomEnv } from "../../lib/zoom";
 
 // Server-rendered (not pre-rendered) so it runs on each request.
 export const prerender = false;
@@ -19,24 +19,6 @@ function json(data: unknown, status = 200): Response {
 function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
-
-// TEMP diagnostic — reports which secrets the Worker can read (booleans only, no
-// values). Remove once the Zoom secrets are confirmed configured.
-export const GET: APIRoute = async () => {
-  const e = env as unknown as Record<string, string | undefined>;
-  const set = (v?: string) => typeof v === "string" && v.trim().length > 0;
-  return json({
-    secretsPresent: {
-      BREVO_API_KEY: set(e.BREVO_API_KEY),
-      BREVO_LIST_ID: set(e.BREVO_LIST_ID),
-      ZOOM_ACCOUNT_ID: set(e.ZOOM_ACCOUNT_ID),
-      ZOOM_CLIENT_ID: set(e.ZOOM_CLIENT_ID),
-      ZOOM_CLIENT_SECRET: set(e.ZOOM_CLIENT_SECRET),
-      ZOOM_WEBINAR_ID: set(e.ZOOM_WEBINAR_ID),
-    },
-    zoom: await diagnose(e as ZoomEnv),
-  });
-};
 
 export const POST: APIRoute = async ({ request }) => {
   const cfEnv = env as unknown as Record<string, string | undefined>;
