@@ -73,3 +73,33 @@ export async function registerForWebinar(
     return null;
   }
 }
+
+/**
+ * TEMP diagnostic — attempts the OAuth step and reports the outcome + credential
+ * lengths (NOT values). Helps pinpoint a wrong/typo'd secret in production.
+ */
+export async function diagnose(env: ZoomEnv): Promise<Record<string, unknown>> {
+  const accountId = env.ZOOM_ACCOUNT_ID?.trim();
+  const clientId = env.ZOOM_CLIENT_ID?.trim();
+  const clientSecret = env.ZOOM_CLIENT_SECRET?.trim();
+  const webinarId = env.ZOOM_WEBINAR_ID?.trim();
+  const lens = {
+    accountIdLen: accountId?.length ?? 0,
+    clientIdLen: clientId?.length ?? 0,
+    secretLen: clientSecret?.length ?? 0,
+    webinarId: webinarId ?? null,
+  };
+  if (!accountId || !clientId || !clientSecret) return { ...lens, step: "missing_creds" };
+  try {
+    const basic = btoa(`${clientId}:${clientSecret}`);
+    const res = await fetch(
+      `https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${encodeURIComponent(accountId)}`,
+      { method: "POST", headers: { Authorization: `Basic ${basic}` } },
+    );
+    const body = await res.text();
+    if (!res.ok) return { ...lens, step: "oauth_failed", status: res.status, body: body.slice(0, 250) };
+    return { ...lens, step: "oauth_ok", status: res.status };
+  } catch (e) {
+    return { ...lens, step: "oauth_threw", error: String(e).slice(0, 250) };
+  }
+}
