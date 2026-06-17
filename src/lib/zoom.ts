@@ -14,7 +14,10 @@ export interface ZoomRegistration {
 }
 
 async function getAccessToken(env: ZoomEnv): Promise<string | null> {
-  const { ZOOM_ACCOUNT_ID, ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET } = env;
+  // trim() guards against secrets pasted with a stray space/newline
+  const ZOOM_ACCOUNT_ID = env.ZOOM_ACCOUNT_ID?.trim();
+  const ZOOM_CLIENT_ID = env.ZOOM_CLIENT_ID?.trim();
+  const ZOOM_CLIENT_SECRET = env.ZOOM_CLIENT_SECRET?.trim();
   if (!ZOOM_ACCOUNT_ID || !ZOOM_CLIENT_ID || !ZOOM_CLIENT_SECRET) return null;
 
   const basic = btoa(`${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`);
@@ -38,7 +41,7 @@ export async function registerForWebinar(
   env: ZoomEnv,
   registrant: { email: string; firstName: string; lastName: string },
 ): Promise<ZoomRegistration | null> {
-  const webinarId = env.ZOOM_WEBINAR_ID;
+  const webinarId = env.ZOOM_WEBINAR_ID?.trim();
   if (!webinarId) return null;
 
   try {

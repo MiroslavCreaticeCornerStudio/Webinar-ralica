@@ -20,9 +20,24 @@ function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+// TEMP diagnostic — reports which secrets the Worker can read (booleans only, no
+// values). Remove once the Zoom secrets are confirmed configured.
+export const GET: APIRoute = () => {
+  const e = env as unknown as Record<string, string | undefined>;
+  const set = (v?: string) => typeof v === "string" && v.trim().length > 0;
+  return json({
+    BREVO_API_KEY: set(e.BREVO_API_KEY),
+    BREVO_LIST_ID: set(e.BREVO_LIST_ID),
+    ZOOM_ACCOUNT_ID: set(e.ZOOM_ACCOUNT_ID),
+    ZOOM_CLIENT_ID: set(e.ZOOM_CLIENT_ID),
+    ZOOM_CLIENT_SECRET: set(e.ZOOM_CLIENT_SECRET),
+    ZOOM_WEBINAR_ID: set(e.ZOOM_WEBINAR_ID),
+  });
+};
+
 export const POST: APIRoute = async ({ request }) => {
   const cfEnv = env as unknown as Record<string, string | undefined>;
-  const apiKey = cfEnv.BREVO_API_KEY;
+  const apiKey = cfEnv.BREVO_API_KEY?.trim();
   const listId = Number(cfEnv.BREVO_LIST_ID ?? 4);
 
   if (!apiKey) {
