@@ -53,13 +53,34 @@ const eventCards = [
           }
         </ul>
 
-        <a class="thanks__cta btn" href="/">Обратно към началото</a>
+        <a class="thanks__zoom btn" id="zoom-join" href="#" target="_blank" rel="noopener" hidden>
+          Влез в уебинара
+        </a>
+        <a class="thanks__back" href="/">Обратно към началото</a>
       </div>
     </div>
   </section>
 
   <Footer />
 </BaseLayout>
+
+<script>
+  // Reveal the Zoom join button using the link the form stored on success.
+  const url = (() => {
+    try {
+      return sessionStorage.getItem("h2u_join_url") || "";
+    } catch {
+      return "";
+    }
+  })();
+  if (url.startsWith("https://")) {
+    const btn = document.getElementById("zoom-join") as HTMLAnchorElement | null;
+    if (btn) {
+      btn.href = url;
+      btn.hidden = false;
+    }
+  }
+</script>
 
 <style>
   .thanks {
@@ -185,9 +206,20 @@ const eventCards = [
     color: #1c1c1c;
   }
 
-  .thanks__cta {
+  .thanks__zoom {
     margin-top: 0.5em;
     border-radius: 2em;
+  }
+
+  .thanks__back {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .thanks__back:hover {
+    opacity: 0.85;
   }
 
   @media (max-width: 767px) {

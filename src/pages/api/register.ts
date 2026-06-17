@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 // Astro v6 on Cloudflare: runtime env/secrets come from `cloudflare:workers`.
 // In dev the adapter populates this from `.env`; in production from Worker secrets.
 import { env } from "cloudflare:workers";
+import { registerForWebinar, type ZoomEnv } from "../../lib/zoom";
 
 // Server-rendered (not pre-rendered) so it runs on each request.
 export const prerender = false;
@@ -67,6 +68,16 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
+  // Register in the Zoom webinar (best-effort — a failure must not block the lead
+  // capture). Store the registrant's unique join link on the Brevo contact.
+  const nameParts = name.split(/\s+/).filter(Boolean);
+  const zoom = await registerForWebinar(cfEnv as ZoomEnv, {
+    email,
+    firstName: nameParts[0] ?? name,
+    lastName: nameParts.slice(1).join(" "),
+  });
+  if (zoom?.joinUrl) attributes.WEBINARURL = zoom.joinUrl;
+
   try {
     const res = await fetch(BREVO_CONTACTS_URL, {
       method: "POST",
@@ -84,11 +95,11 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     // 201 created, 204 updated → success
-    if (res.ok) return json({ ok: true });
+    if (res.ok) return json({ ok: true, joinUrl: zoom?.joinUrl ?? "" });
 
     const errBody = (await res.json().catch(() => ({}))) as Record<string, unknown>;
     // Already-existing contacts are fine (updateEnabled handles them)
-    if (errBody.code === "duplicate_parameter") return json({ ok: true });
+    if (errBody.code === "duplicate_parameter") return json({ ok: true, joinUrl: zoom?.joinUrl ?? "" });
 
     console.error("Brevo error", res.status, errBody);
     return json({ ok: false, error: "Възникна грешка. Моля, опитай отново." }, 502);

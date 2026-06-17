@@ -396,6 +396,10 @@ const details = [
         });
         const result = await res.json().catch(() => ({}));
         if (res.ok && result.ok) {
+          // Pass the Zoom join link to the thank-you page (same tab)
+          try {
+            sessionStorage.setItem("h2u_join_url", result.joinUrl || "");
+          } catch {}
           window.location.href = "/thank-you"; // success
           return;
         }
