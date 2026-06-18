@@ -10,7 +10,10 @@ import FinalCta from "../components/FinalCta.astro";
 import Footer from "../components/Footer.astro";
 import { webinar } from "../data/webinar";
 
-const siteUrl = Astro.site?.href ?? "https://home2u.com/";
+const siteUrl = Astro.site?.href ?? "https://webinar.home2u.bg/";
+// This page's own canonical URL (e.g. https://webinar.home2u.bg/deals-worth-millions)
+// — used for the in-page #register anchor so structured data points to the form.
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
 
 const eventSchema = {
   "@context": "https://schema.org",
@@ -24,7 +27,7 @@ const eventSchema = {
   eventStatus: "https://schema.org/EventScheduled",
   location: {
     "@type": "VirtualLocation",
-    url: new URL("#register", siteUrl).href,
+    url: new URL("#register", pageUrl).href,
   },
   image: [new URL("assets/images/hero-speaker-ralitsa.png", siteUrl).href],
   organizer: { "@type": "Organization", name: "Home2U", url: siteUrl },
@@ -34,7 +37,7 @@ const eventSchema = {
     price: "0",
     priceCurrency: "BGN",
     availability: "https://schema.org/InStock",
-    url: new URL("#register", siteUrl).href,
+    url: new URL("#register", pageUrl).href,
   },
 };
 ---
