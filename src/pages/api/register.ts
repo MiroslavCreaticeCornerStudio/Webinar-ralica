@@ -1,8 +1,9 @@
 import type { APIRoute } from "astro";
-// Astro v6 on Cloudflare: runtime env/secrets come from `cloudflare:workers`.
-// In dev the adapter populates this from `.env`; in production from Worker secrets.
-import { env } from "cloudflare:workers";
-import { registerForWebinar, type ZoomEnv } from "../../lib/zoom";
+// Runtime secrets via Astro's adapter-agnostic `getSecret` (astro:env/server):
+// reads from `.env` in dev and from the platform's runtime env (Vercel env vars)
+// in production — without baking secrets into the build bundle.
+import { getSecret } from "astro:env/server";
+import { registerForWebinar } from "../../lib/zoom";
 
 // Server-rendered (not pre-rendered) so it runs on each request.
 export const prerender = false;
@@ -21,9 +22,8 @@ function isEmail(value: string): boolean {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const cfEnv = env as unknown as Record<string, string | undefined>;
-  const apiKey = cfEnv.BREVO_API_KEY?.trim();
-  const listId = Number(cfEnv.BREVO_LIST_ID ?? 4);
+  const apiKey = getSecret("BREVO_API_KEY")?.trim();
+  const listId = Number(getSecret("BREVO_LIST_ID") ?? 4);
 
   if (!apiKey) {
     console.error("BREVO_API_KEY is not set");
@@ -71,7 +71,7 @@ export const POST: APIRoute = async ({ request }) => {
   // Register in the Zoom webinar (best-effort — a failure must not block the lead
   // capture). Store the registrant's unique join link on the Brevo contact.
   const nameParts = name.split(/\s+/).filter(Boolean);
-  const zoom = await registerForWebinar(cfEnv as ZoomEnv, {
+  const zoom = await registerForWebinar({
     email,
     firstName: nameParts[0] ?? name,
     lastName: nameParts.slice(1).join(" "),

@@ -1,23 +1,18 @@
 // Zoom Server-to-Server OAuth + webinar registration.
-// All credentials come from the runtime env (never hard-coded / committed).
-
-export interface ZoomEnv {
-  ZOOM_ACCOUNT_ID?: string;
-  ZOOM_CLIENT_ID?: string;
-  ZOOM_CLIENT_SECRET?: string;
-  ZOOM_WEBINAR_ID?: string;
-}
+// Credentials come from the runtime env via `getSecret` (never hard-coded / committed):
+// `.env` in dev, Vercel env vars in production — adapter-agnostic.
+import { getSecret } from "astro:env/server";
 
 export interface ZoomRegistration {
   joinUrl: string;
   registrantId: string;
 }
 
-async function getAccessToken(env: ZoomEnv): Promise<string | null> {
+async function getAccessToken(): Promise<string | null> {
   // trim() guards against secrets pasted with a stray space/newline
-  const ZOOM_ACCOUNT_ID = env.ZOOM_ACCOUNT_ID?.trim();
-  const ZOOM_CLIENT_ID = env.ZOOM_CLIENT_ID?.trim();
-  const ZOOM_CLIENT_SECRET = env.ZOOM_CLIENT_SECRET?.trim();
+  const ZOOM_ACCOUNT_ID = getSecret("ZOOM_ACCOUNT_ID")?.trim();
+  const ZOOM_CLIENT_ID = getSecret("ZOOM_CLIENT_ID")?.trim();
+  const ZOOM_CLIENT_SECRET = getSecret("ZOOM_CLIENT_SECRET")?.trim();
   if (!ZOOM_ACCOUNT_ID || !ZOOM_CLIENT_ID || !ZOOM_CLIENT_SECRET) return null;
 
   const basic = btoa(`${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`);
@@ -38,15 +33,14 @@ async function getAccessToken(env: ZoomEnv): Promise<string | null> {
  * Returns the registrant's unique join URL, or null on any failure (never throws).
  */
 export async function registerForWebinar(
-  env: ZoomEnv,
   registrant: { email: string; firstName: string; lastName: string },
 ): Promise<ZoomRegistration | null> {
   // Strip all spaces — Zoom shows the ID as "813 3919 0579" but the API needs "81339190579".
-  const webinarId = env.ZOOM_WEBINAR_ID?.replace(/\s+/g, "");
+  const webinarId = getSecret("ZOOM_WEBINAR_ID")?.replace(/\s+/g, "");
   if (!webinarId) return null;
 
   try {
-    const token = await getAccessToken(env);
+    const token = await getAccessToken();
     if (!token) return null;
 
     const res = await fetch(

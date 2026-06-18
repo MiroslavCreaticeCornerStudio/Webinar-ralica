@@ -1,9 +1,0 @@
-{
-  // Base Worker config. The site is static apart from the /api/register endpoint.
-  // The @astrojs/cloudflare adapter generates the full deploy config at build time
-  // (worker entry + ./dist/client static assets) and merges in these base values.
-  // Set the Brevo secret with:  npx wrangler secret put BREVO_API_KEY
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "webinar-ralica",
-  "compatibility_date": "2025-06-01"
-}
