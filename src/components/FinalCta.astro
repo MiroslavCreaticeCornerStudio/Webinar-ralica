@@ -3,10 +3,10 @@ import Countdown from "./Countdown.astro";
 import { webinar } from "../data/webinar";
 
 const details = [
-  { icon: "icon-calendar.svg", label: "Дата:", value: "18.06.2026" },
-  { icon: "icon-map-pin.svg", label: "Къде", value: "Онлайн в Zoom" },
-  { icon: "icon-hourglass.svg", label: "Времетраене:", value: "60 мин." },
-  { icon: "icon-clock.svg", label: "Час:", value: "18:00" },
+  { icon: "icon-calendar.svg", label: "Дата:", value: webinar.date },
+  { icon: "icon-map-pin.svg", label: "Къде", value: webinar.location },
+  { icon: "icon-hourglass.svg", label: "Времетраене:", value: webinar.duration },
+  { icon: "icon-clock.svg", label: "Час:", value: webinar.time },
 ];
 ---
 

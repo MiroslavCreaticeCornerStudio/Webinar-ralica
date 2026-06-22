@@ -4,10 +4,10 @@ import Countdown from "./Countdown.astro";
 import { webinar } from "../data/webinar";
 
 const eventCards = [
-  { icon: "icon-calendar.svg", label: "Дата:", value: "18.06.2026г.", alt: "Календар" },
-  { icon: "icon-clock.svg", label: "Час:", value: "18:00", alt: "Часовник" },
-  { icon: "icon-map-pin.svg", label: "Къде", value: "Онлайн в Zoom", alt: "Локация" },
-  { icon: "icon-hourglass.svg", label: "Времетраене:", value: "60 мин.", alt: "Времетраене" },
+  { icon: "icon-calendar.svg", label: "Дата:", value: webinar.date, alt: "Календар" },
+  { icon: "icon-clock.svg", label: "Час:", value: webinar.time, alt: "Часовник" },
+  { icon: "icon-map-pin.svg", label: "Къде", value: webinar.location, alt: "Локация" },
+  { icon: "icon-hourglass.svg", label: "Времетраене:", value: webinar.duration, alt: "Времетраене" },
 ];
 ---
 
