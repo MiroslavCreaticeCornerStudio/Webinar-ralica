@@ -4,6 +4,7 @@ import type { APIRoute } from "astro";
 // in production — without baking secrets into the build bundle.
 import { getSecret } from "astro:env/server";
 import { registerForWebinar } from "../../lib/zoom";
+import { sendSkyguruLead } from "../../lib/skyguru";
 
 // Server-rendered (not pre-rendered) so it runs on each request.
 export const prerender = false;
@@ -78,6 +79,20 @@ export const POST: APIRoute = async ({ request }) => {
   });
   if (zoom?.joinUrl) attributes.WEBINARURL = zoom.joinUrl;
 
+  // Also forward the full lead to the Skyguru CRM — form fields + Zoom join link
+  // + all ad attribution / tracking. Best-effort and concurrent with Brevo; it
+  // never throws, and the success response stays gated on Brevo (the primary CRM).
+  const skyguruDone = sendSkyguruLead({
+    name,
+    firstName: nameParts[0] ?? name,
+    lastName: nameParts.slice(1).join(" ") || undefined,
+    email,
+    phone,
+    consent,
+    webinarJoinUrl: zoom?.joinUrl || undefined,
+    attribution,
+  });
+
   try {
     const res = await fetch(BREVO_CONTACTS_URL, {
       method: "POST",
@@ -93,6 +108,7 @@ export const POST: APIRoute = async ({ request }) => {
         updateEnabled: true, // re-registration updates the contact instead of erroring
       }),
     });
+    await skyguruDone; // ensure the CRM POST completes before the function freezes
 
     // 201 created, 204 updated → success
     if (res.ok) return json({ ok: true, joinUrl: zoom?.joinUrl ?? "" });
@@ -104,6 +120,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.error("Brevo error", res.status, errBody);
     return json({ ok: false, error: "Възникна грешка. Моля, опитай отново." }, 502);
   } catch (err) {
+    await skyguruDone; // best-effort; never throws
     console.error("Brevo request failed", err);
     return json({ ok: false, error: "Възникна грешка при свързване. Опитай отново." }, 502);
   }
