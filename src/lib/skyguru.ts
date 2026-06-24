@@ -36,6 +36,7 @@ export async function sendSkyguruLead(lead: SkyguruLead): Promise<boolean> {
     email: lead.email,
     phone: lead.phone,
     consent: lead.consent,
+    form_name: "Уебинар – Сделки за милиони в настоящия пазар",
     source: "home2u-webinar-ralica",
     webinar: "Сделки за милиони",
     webinar_join_url: lead.webinarJoinUrl,
