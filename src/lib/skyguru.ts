@@ -36,6 +36,10 @@ export async function sendSkyguruLead(lead: SkyguruLead): Promise<boolean> {
     email: lead.email,
     phone: lead.phone,
     consent: lead.consent,
+    // `form` feeds Skyguru's native "Форма" field (it otherwise defaults to
+    // "landing_page" for public-API leads). `form_name` is kept as a custom-field
+    // fallback. If the dev team confirms a different native key, swap `form`.
+    form: "Уебинар – Сделки за милиони в настоящия пазар",
     form_name: "Уебинар – Сделки за милиони в настоящия пазар",
     source: "home2u-webinar-ralica",
     webinar: "Сделки за милиони",
