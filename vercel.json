@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/course",
+      "destination": "https://home2u-after-webinar.vercel.app/"
+    },
+    {
+      "source": "/course/:path*",
+      "destination": "https://home2u-after-webinar.vercel.app/:path*"
+    }
+  ]
+}
